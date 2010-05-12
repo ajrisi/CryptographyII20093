@@ -1,0 +1,138 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{pstricks}
+\usepackage{tikz}
+\usepackage{helvet}
+\usepackage{ulem}
+\usepackage{newclude}
+\usepackage{amsfonts}
+\bibliographystyle{plain}
+\pagestyle{empty}
+
+% PDF settings
+\hypersetup{%
+  pdftitle={An Overview of Gentry's Fully Homomorphic Encryption Scheme}, %
+  pdfauthor={Adam Risi and Ross Snider}, %
+}
+
+\title{An Overview of Gentry's Fully Homomorphic Encryption Scheme}
+\author{Adam Risi \and Ross Snider}
+
+\begin{document}
+\maketitle
+\titlepage
+\tableofcontents
+\pagebreak
+
+\begin{abstract}
+In a 1978 paper\cite{rad-priv} inspired by the multiplicative
+homomorphic properties of the RSA cryptosystem, Rivest, Shamir and
+Dertouzos detailed essential properties of what they called a “privacy
+homomorphism” – a cryptographic scheme that would allow third party
+processing of encrypted data without access to any plaintext or
+private key information. While partial strides toward such a system
+have been made over the past thirty years, most cryptographers
+believed that no such scheme could actually exist. Craig Gentry of
+Stanford University fully realized such a scheme in his 2009 PhD
+dissertation “A Fully Homomorphic Encryption Scheme Over Ideal
+Lattices.”\cite{gentry-lattice} In this paper, we describe a similar
+(fully homomorphic) scheme over the integers (also invented by
+Gentry), which remains conceptually identical to the original lattice
+scheme but with the added benefit that it is much simplier.
+\end{abstract}
+
+\section{Introduction}
+In his 2009 paper ``Fully Homomorphic Encryption over the
+Integers''\cite{gentry-integers}, Craig Gentry made two important
+contributions to the field. First, he defined a partially homomorphic
+scheme which was interesting in its own right. This scheme was robust
+enough to allow third party contributions of a nearly arbitrary number
+of additions and many multiplications, beating out the
+Boneh-Goh-Nissim cryptosystem, which remained a leader in the field
+for quite some time.
+
+Unfortunately, Gentry's partially homomorphic scheme suffered from the
+fact that as computations are performed on the ciphertexts, noise is
+introduced in the output ciphertexts. This limited the malleability of
+the scheme – after some number of computations, the error vectors
+would grow too large and decryption would become invalid.
+
+Gentry realized that if he could find some way to eliminate the
+growing noise implicit in the scheme, he could modify his original
+scheme to allow an arbitrary number of additions and
+multiplications. In turn, this would allow him to perform any
+computable function on encrypted data.
+
+Aware that successfully decrypting and subsequently re-encrypting a
+given ciphertext would eliminate its noise vector, Gentry asked 'why
+not allow the third party to decrypt the ciphertexts homomorphically?'
+The third party would be able to remove the growing noise from
+ciphertexts. At the same time, asking the third party to do the
+decryption homomorphically would maintain the privacy of the private
+key.
+
+If the noise introduced by a homomorphic evaluation of the decryption
+function is less than what the scheme is capable of handling, then the
+scheme can chain together homomorphic evaluations of decryption with
+homomorphic evaluations of the target computable functions, resulting
+in a scheme that can handle a computable function of any complexity.
+
+\section{History}
+While a Fully Homomorphic Encryption scheme is new, the idea is
+not. The inspiration for a fully homomorphic encryption system came
+from an interesting property in RSA.
+
+\begin{eqnarray}
+c = m ^{e} \bmod n\\
+m = c ^{d} \bmod n 
+\end{eqnarray}
+
+If we multiply the ciphertext $c$ by $y ^{e}$, we can see that the
+decryption of $ cy^{e} $ will yield $my$, or the plaintext multiplied
+by the value y. This \textit{partial homomorphism} lead to greater
+investivation by Rivest, Adleman, and Dertuzos.
+
+Proposed in 1978 by Rivest, Adleman, and Dertuzos, ``privacy
+homomorphisms'' are the first known example of what came to be called
+``fully homomorphic encryption.'' Rivest, Adleman, and Dertuzos
+proposed a thought experiment: Imagine a loan company who stored its
+data at an off site location. Since the data about loans is sensitive,
+the loan company decided to have all of its data encrypted. Now, a
+problem becomes apparent: if the loan data is stored off site, then
+how would the loan company be able to query it? Rivest, Adleman, and
+Dertuzos proposed that ``privacy homomorphisms'' could be used, a
+theoretical encryption system where data could be stored, and queried,
+in a completely encrypted environment.
+
+
+\section{Gentry's Fully Homomorphic Encryption Scheme}
+
+\subsection{Construction}
+Gentry proposes a fully homomorphic encryption scheme that relies on
+two different ``difficult problems'' for security, the
+\textbf{Approximate Greatest Common Divisor} problem, and the
+\textbf{Sparse Subset Sum} problem.
+
+\subsubsection{Approximate Greatest Common Divisor}
+
+
+\subsubsection{Sparse Subset Sum}
+The sparse subset sum problem is a variant of the common subset sum
+problem. In the classic Subset Sum problem, we are given a set $
+\mathbb{s} $ and a target value $t$, and are asked for a subset of $
+\mathbb{s} $ whose \textit{sum} is equal to $t$. In the \textit{Sparse
+  Subset Sum} problem, the simple addition that the cardinality of the
+answer set must be much smaller than the cardinality of $ \mathbb{s}
+$. This problem, and its parent problem (Subset Sum), have been shown
+to be NP-Complete.
+
+\subsection{Bootstrapping}
+
+\section{Fully Homomorphic Encryption in the Future}
+
+\pagebreak
+\bibliography{report}
+\end{document}
+
+
