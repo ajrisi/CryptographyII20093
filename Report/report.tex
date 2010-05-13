@@ -148,9 +148,33 @@ and $ \varepsilon(y) $.
 
 \paragraph{Multiplication}
 \begin{eqnarray*}
+\varepsilon(x) \times \varepsilon(y) &=& (m_1 + p q_1)(m_2 + p q_2)\\
+\delta(\varepsilon(x) \times \varepsilon(y))&=& m_1m_2 + m_1pq_2 + m_2pq_1 + p^2q_1q_2 \bmod p\\
+&=& m_1m_2 \bmod 2
 \end{eqnarray*}
 
 \paragraph{Addition}
+\begin{eqnarray*}
+\varepsilon(x) + \varepsilon(y) &=& m_1 + p q_1 + m_2 + p q_2\\
+\delta(\varepsilon(x) + \varepsilon(y))&=& m_1 + m_2 + pq_1 + pq_2 \bmod p\\
+&=& m_1 + m_2 \bmod 2
+\end{eqnarray*}
+
+To make this a public key system, we simply issue the 3rd party a
+series of encryptions of $0$. The 3rd party can then add one to any
+encryption of $0$ to have it decrypt to $1$, and leave it alone to
+have it decrypt to $0$.
+
+\subsection{Noise}
+As sequential operations are preformed on cyphertext, a number of
+excess ``noise'' is introduced. For example, by preforming a single
+addition and multiplication, a large term appears:
+
+\begin{eqnarray*}
+\varepsilon(x) + \varepsilon(y) \times \varepsilon &=& (m_1 + m_2 + pq_1 + pq_2)(m_3 + pq_3)\\
+&=&m_1m_3 + m_2m_3 + p^2q_1q_3 + p^2q_2q_3\\
+&=&m_3(m_1 + m_2) + p^2(q_1q_3 + q_2q_3)
+\end{eqnarray*}
 
 \subsection{Fully Homomorphic Encrpytion}
 
