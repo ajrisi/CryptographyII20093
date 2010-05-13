@@ -42,8 +42,8 @@
 \end{abstract}
 
 \section{Introduction}
-In his 2009 paper ``Fully Homomorphic Encryption over the
-Integers''\cite{gentry-lattice}, Craig Gentry made two important
+In his 2009 paper ``Fully Homomorphic Encryption using Ideal
+Lattices''\cite{gentry-lattice}, Craig Gentry made two important
 contributions to the field. First, he defined a partially homomorphic
 scheme which was interesting in its own right. This scheme was robust
 enough to allow third party contributions of a nearly arbitrary number
@@ -78,7 +78,7 @@ homomorphic evaluations of the target computable functions, resulting
 in a scheme that can handle a computable function of any complexity.
 
 \section{History}
-While a Fully Homomorphic Encryption scheme is new, the idea is
+While a fully homomorphic encryption scheme is new, the idea is
 not. The inspiration for a fully homomorphic encryption system came
 from an interesting property in RSA.
 
@@ -92,17 +92,19 @@ decryption of $ cy^{e} $ will yield $my$, or the plaintext multiplied
 by the value y. This \textit{partial homomorphism} lead to greater
 investivation by Rivest, Adleman, and Dertouzos.
 
-Proposed in 1978 by Rivest, Adleman, and Dertuzos, ``privacy
+Proposed in 1978 by Rivest, Adleman, and Dertouzos, ``privacy
 homomorphisms'' are the first known example of what came to be called
-``fully homomorphic encryption.'' Rivest, Adleman, and Dertuzos
+``fully homomorphic encryption.'' Rivest, Adleman, and Dertouzos
 proposed a thought experiment: Imagine a loan company who stored its
 data at an off site location. Since the data about loans is sensitive,
 the loan company decided to have all of its data encrypted. Now, a
-problem becomes apparent: if the loan data is stored off site, then
-how would the loan company be able to query it? Rivest, Adleman, and
-Dertuzos proposed that ``privacy homomorphisms'' could be used, a
-theoretical encryption system where data could be stored, and queried,
-in a completely encrypted environment.
+problem becomes apparent: if the loan data is encrypted and stored off
+site, then how would the loan company be able to query it? The clear
+solution is to have the 3rd party query the encrypted loan
+information; however, because the data is encrypted, queries can not
+be performed. Rivest, Adleman, and Dertouzos proposed ``privacy
+homomorphisms,'' a theoretical encryption system where data could be
+stored and queried, in a completely encrypted environment.
 
 Between 1978 and today, a number of other schemes have been shown to
 be partially homomorphic. Paillier, Boneh-Goh-Nissim, and ElGamal all
@@ -155,6 +157,7 @@ circuit. Furthermore, it can be shown that to get homomorphic AND, OR,
 and NOT gates, it sufficies to have homomorphic addition and
 homomorphic multiplication.
 \begin{eqnarray*}
+\label{aoi}
 \mathrm{NOT}(x) &=& 1+x \bmod 2\\
 \mathrm{AND}(x,y) &=& xy \bmod 2\\
 \mathrm{OR}(x,y) &=& (1+x)(1+y) + 1 \bmod 2
@@ -173,17 +176,27 @@ Encryption: To encrypt a single bit $ m \in \{0,1\} $, pick a
 ciphertext integer whose residue mod $ p $ has the same parity as
 $m$. This ciphertext integer can be described as $ c = pq + m' $,
 where $ p $ is the private key, $m'$ is a random $\lambda$ bit integer
-with least significant bit $m$, and $q$ is a $\lambda^5$ bit integer.
+with least significant bit $m$, and $q$ is a random $\lambda^5$ bit
+integer.
 
 Decryption: Decryption under this scheme is simple, the given a
-ciphertext $c$, $ m = ( c \bmod p) \bmod 2 $.
+ciphertext $c$, $ m = ( c \bmod p) \bmod 2 $. Without the key $p$, the
+problem is intractable as described in Section \ref{app-gcd}
 
-We can show that this is homomorphic by looking showing the
+To make this a public key system, we simply issue the 3rd party a
+series of encryptions of $0$. The 3rd party can then add one to any
+encryption of $0$ to have it decrypt to $1$, and leave it alone to
+have it decrypt to $0$.
+
+We can show that this is homomorphic by investigating the
 multiplication and addition of two cithpertexts, $ \varepsilon(x) $
 and $ \varepsilon(y) $.
 
 \paragraph{Multiplication}
 \begin{eqnarray*}
+\varepsilon(x) \times \varepsilon(y) &=& (m_1 + p q_1)(m_2 + p q_2)\\
+\delta(\varepsilon(x) \times \varepsilon(y))&=& m_1m_2 + m_1pq_2 + m_2pq_1 + p^2q_1q_2 \bmod p\\
+&=& m_1m_2 \bmod 2
 \end{eqnarray*}
 
 \paragraph{Addition}
@@ -193,21 +206,25 @@ and $ \varepsilon(y) $.
 &=& m_1 + m_2 \bmod 2
 \end{eqnarray*}
 
-To make this a public key system, we simply issue the 3rd party a
-series of encryptions of $0$. The 3rd party can then add one to any
-encryption of $0$ to have it decrypt to $1$, and leave it alone to
-have it decrypt to $0$.
+With homomorphic multiplication and addition, we can use the
+transformations listed in Section \ref{aoi} to achieve boolean
+circuits, and therefore computable functions.
 
 \subsubsection{Noise}
-As sequential operations are preformed on cyphertext, a number of
+As sequential operations are preformed on ciphertext, a number of
 excess ``noise'' is introduced. For example, by preforming a single
 addition and multiplication, a large term appears:
 
 \begin{eqnarray*}
 \varepsilon(x) + \varepsilon(y) \times \varepsilon(z) &=& (m_1 + m_2 + pq_1 + pq_2)(m_3 + pq_3)\\
 &=&m_1m_3 + m_2m_3 + p^2q_1q_3 + p^2q_2q_3\\
-&=&m_3(m_1 + m_2) + p^2(q_1q_3 + q_2q_3)
+&=&m_3(m_1 + m_2) + p^2(\mathbf{q_1q_3 + q_2q_3})\\
+&=&m_3(m_1 + m_2) + p^2(\mathbf{\gamma})
 \end{eqnarray*}
+
+As the term $\gamma$ grows (approaching p), a problem arises. The
+growing term $\gamma$ limits the number of operatios perfomed on the
+ciphertext. This causes a boundary, making some functions
 
 \subsection{Bootstrapping}
 
@@ -220,6 +237,7 @@ two different ``difficult problems'' for security, the
 \textbf{Sparse Subset Sum} problem.
 
 \subsubsection{Approximate Greatest Common Divisor}
+\label{app-gcd}
 The approximate GCD problem is, given a set of $ n _{i} + pq_{i} $,
 determine p. The best known algorithm is exponential time in the size
 of inputs.
