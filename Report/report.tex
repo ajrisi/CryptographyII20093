@@ -91,7 +91,7 @@ m = c ^{d} \bmod n
 If we multiply the ciphertext $c$ by $y ^{e}$, we can see that the
 decryption of $ cy^{e} $ will yield $my$, or the plaintext multiplied
 by the value y. This \textit{partial homomorphism} lead to greater
-investivation by Rivest, Adleman, and Dertuzos.
+investivation by Rivest, Adleman, and Dertouzos.
 
 Proposed in 1978 by Rivest, Adleman, and Dertuzos, ``privacy
 homomorphisms'' are the first known example of what came to be called
@@ -105,8 +105,25 @@ Dertuzos proposed that ``privacy homomorphisms'' could be used, a
 theoretical encryption system where data could be stored, and queried,
 in a completely encrypted environment.
 
+Between 1978 and today, a number of other schemes have been shown to
+be partially homomorphic. Paillier, Boneh-Goh-Nissim, and ElGamal all
+exhibited partial homomorphism over some operations.
 
-\section{Gentry's Fully Homomorphic Encryption Scheme}
+\section{Background}
+
+\subsection{RSA}
+
+
+\subsection{Partially Homomorphic and Fully Homomorphic Encryption}
+
+\subsection{Constructing a Boolean Circuit}
+
+
+\section{Gentry's Homomorphic Encryption Scheme}
+
+\subsection{Partially Homomorphic Encryption}
+
+\subsection{Fully Homomorphic Encrpytion}
 
 \subsection{Construction}
 Gentry proposes a fully homomorphic encryption scheme that relies on
@@ -115,6 +132,9 @@ two different ``difficult problems'' for security, the
 \textbf{Sparse Subset Sum} problem.
 
 \subsubsection{Approximate Greatest Common Divisor}
+The approximate GCD problem is, given a set of $ n _{i} + pq_{i} $,
+determine p. The best known algorithm is exponential time in the size
+of inputs.
 
 
 \subsubsection{Sparse Subset Sum}
@@ -125,7 +145,7 @@ problem. In the classic Subset Sum problem, we are given a set $
   Subset Sum} problem, the simple addition that the cardinality of the
 answer set must be much smaller than the cardinality of $ \mathbb{s}
 $. This problem, and its parent problem (Subset Sum), have been shown
-to be NP-Complete.
+to be intractable reasonably sized $ \mathbb{s} $.
 
 \subsection{Bootstrapping}
 
