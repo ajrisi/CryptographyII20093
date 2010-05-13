@@ -33,12 +33,12 @@
   such a system have been made over the past thirty years, most
   cryptographers believed that no such scheme would ever be
   realized. Craig Gentry of Stanford University fully realized such a
-  scheme in his 2009 PhD dissertation ''A Fully Homomorphic Encryption
+  scheme in his 2009 PhD dissertation ``A Fully Homomorphic Encryption
   Scheme.''\cite{gentry-thesis} In this paper, we describe a similar
   (fully homomorphic) scheme over the integers (also invented by
   Gentry)\cite{gentry-integer}, which remains conceptually identical
   to the original lattice scheme but with the added benefit that it is
-  much simplier.
+  much simpler.
 \end{abstract}
 
 \section{Introduction}
@@ -64,7 +64,7 @@ multiplications. In turn, this would allow him to perform any
 computable function on encrypted data.
 
 Aware that successfully decrypting and subsequently re-encrypting a
-given ciphertext would eliminate its noise vector, Gentry asked ''why
+given ciphertext would eliminate its noise vector, Gentry asked ``why
 not allow the third party to decrypt the ciphertexts \textit{homomorphically}?''
 The third party would be able to remove the growing noise from
 ciphertexts. At the same time, asking the third party to do the
@@ -124,7 +124,7 @@ m^{de} \bmod n &=& m \bmod n\\
 \varepsilon_{RSA}(m) &=& m^e \bmod n\\
 \delta_{RSA}(c) &=& c^d \bmod n\\
 \end{eqnarray*}
-Decrypting a multiplication of two ciphertexts yeilds the multiplication of the corresponding plaintexts.
+Decrypting a multiplication of two ciphertexts yields the multiplication of the corresponding plaintexts.
 \begin{eqnarray*}
 \varepsilon_{RSA}(x) \times \varepsilon_{RSA}(y) &=& x^e y^e \bmod n\\
 \delta(\varepsilon_{RSA}(x) \times \varepsilon_{RSA}(y)) &=& (x^e y^e)^d \bmod n\\
@@ -133,7 +133,7 @@ Decrypting a multiplication of two ciphertexts yeilds the multiplication of the 
 \end{eqnarray*}
 
 \subsection{Partially Homomorphic and Fully Homomorphic Encryption}
-To generalize this property, consider the contraint that
+To generalize this property, consider the constraint that
 $\delta(\mathcal{F}(\varepsilon(m_1), \varepsilon(m_2), ...,
 \varepsilon(m_n))) = \mathcal{F}(m_1, m_2, ..., m_n)$ for some set of
 functions $\mathcal{F}$ on all $m_i$ in the plaintext space. We say
@@ -154,13 +154,16 @@ circuits of a particular variety. To show that an encryption scheme is
 \textit{fully homomorphic}, it is sufficient to show that an
 encryption scheme can handle every possible boolean
 circuit. Furthermore, it can be shown that to get homomorphic AND, OR,
-and NOT gates, it sufficies to have homomorphic addition and
+and NOT gates, it suffices to have homomorphic addition and
 homomorphic multiplication.
 \begin{eqnarray*}
 \label{aoi}
+&x,y \in {0,1}
+\end{eqnarray*}
+\begin{eqnarray*}
 \mathrm{NOT}(x) &=& 1+x \bmod 2\\
 \mathrm{AND}(x,y) &=& xy \bmod 2\\
-\mathrm{OR}(x,y) &=& (1+x)(1+y) + 1 \bmod 2
+\mathrm{OR}(x,y) &=& (1+x)(1+y) + 1 \bmod 2\\
 \end{eqnarray*}
 
 \section{Gentry's Homomorphic Encryption Scheme}
@@ -189,20 +192,20 @@ encryption of $0$ to have it decrypt to $1$, and leave it alone to
 have it decrypt to $0$.
 
 We can show that this is homomorphic by investigating the
-multiplication and addition of two cithpertexts, $ \varepsilon(x) $
+multiplication and addition of two ciphertexts, $ \varepsilon(x) $
 and $ \varepsilon(y) $.
 
 \paragraph{Multiplication}
 \begin{eqnarray*}
 \varepsilon(x) \times \varepsilon(y) &=& (m_1 + p q_1)(m_2 + p q_2)\\
-\delta(\varepsilon(x) \times \varepsilon(y))&=& m_1m_2 + m_1pq_2 + m_2pq_1 + p^2q_1q_2 \bmod p \bmod 2\\
+\delta(\varepsilon(x) \times \varepsilon(y))&=& (m_1m_2 + m_1pq_2 + m_2pq_1 + p^2q_1q_2 \bmod p) \bmod 2\\
 &=& m_1m_2 \bmod 2
 \end{eqnarray*}
 
 \paragraph{Addition}
 \begin{eqnarray*}
 \varepsilon(x) + \varepsilon(y) &=& m_1 + p q_1 + m_2 + p q_2\\
-\delta(\varepsilon(x) + \varepsilon(y))&=& m_1 + m_2 + pq_1 + pq_2 \bmod p\\
+\delta(\varepsilon(x) + \varepsilon(y))&=& (m_1 + m_2 + pq_1 + pq_2 \bmod p) \bmod 2\\
 &=& m_1 + m_2 \bmod 2
 \end{eqnarray*}
 
@@ -225,13 +228,14 @@ addition and multiplication, a large term appears:
 As the term $\alpha$ grows (approaching p), a problem arises. If
 $\alpha$ becomes larger than $p$, the parity of the masked plaintext
 is corrupted, resulting in invalid decryption. This property limits
-the number of operations the can be perfomed, thus limiting the number
-of computable functions.
+the number of operations the can be performed, thus limiting the depths
+of feasible boolean circuits, thus limiting the set of computable
+functions.
 
 \subsection{Bootstrapping}
 How might one remove this growing noise vector? The simplest method is
 to send encrypted outputs to the private key holder -- allowing him to
-decrypt and then reencrypt (and thus in the process removing the noise).
+decrypt and then re-encrypt (and thus in the process removing the noise).
 This would be unfortunate, however, because the scheme would then
 require the continual involvement of the private key holder.
 
@@ -246,18 +250,52 @@ The question then becomes, can this scheme support a homomorphic
 evaluation of its decryption circuit? Unfortunately, the answer is
 no:
 \begin{eqnarray*}
+\\
 \delta(c) &=& (c \bmod p) \bmod 2\\
 &=& c - p \lceil c/p \rfloor \bmod 2\\
 &=& c - \lceil c/p \rfloor \bmod 2\\
 &=& LSB(c) \oplus LSB(\lceil c/p \rfloor)
 \end{eqnarray*}
 
+The division of two large integers ($c$ over $p$) introduces too much noise for
+decryption to fit inside the ``permitted'' boolean circuits. If there were
+a way to augment the original scheme so that $\lceil c/p \rfloor$ were
+permitted, we could chain progress of the target computable function together
+with occasional noise resets so that the encryption scheme becomes fully
+homomorphic.
 
-\subsection{Fully Homomorphic Encrpytion}
+\subsection{Fully Homomorphic Encryption}
+The key generation, decryption and encryption functions will be modified
+with a ``hint'' about $c/p$ that will not expose $p$ (the private key).
+
+Key Generation: The private key, $p$, is a randomly generated $\lambda^2$ bit
+odd integer. The public key will consist of encryptions of $0$ as before and 
+$\bar{y}$, a set $\{y_1, y_2, ..., y_{\beta}\}$ which contains a low cardinality
+subset of size $\alpha$ whose sum is 1/p. The private key will be augmented to
+include a bitmask solution to the subset sum problem $\bar{j}$. Finally, the public key
+will include an encrypted version of the private key.
+
+Encryption: To encrypt a single bit $ m \in \{0,1\} $, pick a
+ciphertext integer whose residue mod $ p $ has the same parity as
+$m$. This ciphertext integer can be described as $ c = pq + m' $,
+where $ p $ is the private key, $m'$ is a random $\lambda$ bit integer
+with least significant bit $m$, and $q$ is a random $\lambda^5$ bit
+integer. Post process the set $\bar{y}$ with the encryption value $c$ to
+make a set $\bar{z}$ such that $z_i = y_i \times c$. Because it is known
+that there is a subset of $\bar{y}$ that sums to $1/p$, it is known that
+there is a subset of $\bar{z}$ that sums to $c/p$.
+
+Decryption: Given a ciphertext $c$ and the private key,
+$ m = ( c \bmod p) \bmod 2 $. Given the ciphertext $c$ and the public key,
+homomorphic decryption can be done $ m = LSB(c) \oplus LSB(\sum z_i \times j_i) $.
+
+The decryption circuit can now be evaluated homomorphically without it adding
+too much error -- the division of two large number has been replaced by a
+small number of additions.
 
 \subsection{Security}
 Gentry proposes a fully homomorphic encryption scheme that relies on
-two different ``difficult problems'' for security, the
+two ``difficult problems'' for its hardness proof: the
 \textbf{Approximate Greatest Common Divisor} problem, and the
 \textbf{Sparse Subset Sum} problem.
 
@@ -270,26 +308,26 @@ of inputs.
 \subsubsection{Sparse Subset Sum}
 The sparse subset sum problem is a variant of the common subset sum
 problem. In the classic Subset Sum problem, we are given a set $
-\mathbb{s} $ and a target value $t$, and are asked for a subset of $
-\mathbb{s} $ whose \textit{sum} is equal to $t$. In the \textit{Sparse
- Subset Sum} problem, the simple addition that the cardinality of the
-answer set must be much smaller than the cardinality of $ \mathbb{s}
-$. This problem, and its parent problem (Subset Sum), have been shown
-to be intractable reasonably sized $ \mathbb{s} $.
+\mathcal{S} $ and a target value $t$, and are asked for a subset of $
+\mathcal{S} $ whose \textit{sum} is equal to $t$. In the \textit{Sparse
+ Subset Sum} problem, with the additional stipulation that the
+cardinality of the answer set must be much smaller than the cardinality
+of $ \mathcal{S}$. This problem, and its parent problem (Subset Sum),
+are widely believed to be intractable for reasonably sized $ \mathcal{S} $.
 
 \section{Fully Homomorphic Encryption in the Future}
 There are a number of challenges that must be overcome before Gentry's
-technique can be used ``in the real world.'' Primarily, its
-inefficiency. Currently, in order to achieve a $\lambda = 80$ bit
-security, a 2 terabyte ciphertext for evey \textit{bit} of plaintext
+technique can be used ``in the real world.'' (Primarily, its
+inefficiency.) Currently, in order to achieve a $O(2^\lambda) \approx 2^{80}$ 
+security, a 2 terabyte ciphertext for every \textit{bit} of plaintext
 must be used. While Gentry's lattice scheme\cite{gentry-lattice}
 offers much smaller ciphertext-per-bit (64 kilobytes, in this
 example), it still is not usable for reasonably sized plaintexts.
 
-Once the ciphertext size has been reduced, the future for fully
-homomorphic encryption is broad. One can imagine it being used for
-secure cloud computing, anti-priacy applications, voting, census data,
-and more.
+Once the ciphertext size and computation requirements have been reduced,
+the future for fully homomorphic encryption is broad. One can imagine it
+being used for secure cloud computing, anti-piracy applications, voting,
+census data, and more.
 
 \pagebreak
 \bibliography{report}
