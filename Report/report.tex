@@ -109,7 +109,16 @@ exhibited partial homomorphism over some operations.
 
 \section{Background}
 
-\subsection{RSA}
+\subsection{Multiplicative Homomorphism in RSA}
+In RSA, the encryption function $\varepsilon$ and decryption function $\delta$ provide a multiplicative homomorphism. First, recall:
+\begin{eqnarray}
+\varepsilon_{RSA}(m) &=& m^e \bmod n\\
+\delta_{RSA}(c) &=& c^d \bmod n\\
+de &=& 1 \bmod \phi(n)\\
+m^{de} \bmod n &=& m \bmod n\\
+\\
+\varepsilon_{RSA}(x) \varepsilon_{RSA}(y) = 
+\end{eqnarray}
 
 
 \subsection{Partially Homomorphic and Fully Homomorphic Encryption}
