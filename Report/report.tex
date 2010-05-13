@@ -24,25 +24,26 @@
 \pagebreak
 
 \begin{abstract}
-In a 1978 paper\cite{rad-priv} inspired by the multiplicative
-homomorphic properties of the RSA cryptosystem, Rivest, Shamir and
-Dertouzos detailed essential properties of what they called a “privacy
-homomorphism” – a cryptographic scheme that would allow third party
-processing of encrypted data without access to any plaintext or
-private key information. While partial strides toward such a system
-have been made over the past thirty years, most cryptographers
-believed that no such scheme could actually exist. Craig Gentry of
-Stanford University fully realized such a scheme in his 2009 PhD
-dissertation “A Fully Homomorphic Encryption Scheme Over Ideal
-Lattices.”\cite{gentry-lattice} In this paper, we describe a similar
-(fully homomorphic) scheme over the integers (also invented by
-Gentry), which remains conceptually identical to the original lattice
-scheme but with the added benefit that it is much simplier.
+  In a 1978 paper\cite{rad-priv} inspired by the multiplicative
+  homomorphic properties of the RSA cryptosystem, Rivest, Shamir and
+  Dertouzos detailed essential properties of what they called a
+  \textit{privacy homomorphism} -- a cryptographic scheme that would
+  allow third party processing of encrypted data without access to any
+  plaintext or private key information. While partial strides toward
+  such a system have been made over the past thirty years, most
+  cryptographers believed that no such scheme could actually
+  exist. Craig Gentry of Stanford University fully realized such a
+  scheme in his 2009 PhD dissertation ''A Fully Homomorphic Encryption
+  Scheme.''\cite{gentry-thesis} In this paper, we describe a similar
+  (fully homomorphic) scheme over the integers (also invented by
+  Gentry)\cite{gentry-integer}, which remains conceptually identical
+  to the original lattice scheme but with the added benefit that it is
+  much simplier.
 \end{abstract}
 
 \section{Introduction}
 In his 2009 paper ``Fully Homomorphic Encryption over the
-Integers''\cite{gentry-integers}, Craig Gentry made two important
+Integers''\cite{gentry-lattice}, Craig Gentry made two important
 contributions to the field. First, he defined a partially homomorphic
 scheme which was interesting in its own right. This scheme was robust
 enough to allow third party contributions of a nearly arbitrary number
@@ -110,7 +111,9 @@ exhibited partial homomorphism over some operations.
 \section{Background}
 
 \subsection{Multiplicative Homomorphism in RSA}
-In RSA, the encryption function $\varepsilon$ and decryption function $\delta$ provide a multiplicative homomorphism. First, recall:
+In RSA, the encryption function $\varepsilon$ and decryption function
+$\delta$ provide a multiplicative homomorphism. First, recall:
+
 \begin{eqnarray*}
 n &=& pq\\
 \phi(n) &=& (p-1)(q-1)\\
@@ -128,10 +131,29 @@ Decrypting a multiplication of two ciphertexts yeilds the multiplication of the 
 \end{eqnarray*}
 
 \subsection{Partially Homomorphic and Fully Homomorphic Encryption}
-To generalize this property, consider the contraint that $\delta(\mathcal{F}(\varepsilon(m_1), \varepsilon(m_2), ..., \varepsilon(m_n))) = \mathcal{F}(m_1, m_2, ..., m_n)$ for some set of functions $\mathcal{F}$ on all $m_i$ in the plaintext space. We say that an encryption scheme is \textit{partially homomorphic} if $\mathcal{F}$ is a (finite or infinite) proper subset of computable functions. We say that an encryption scheme is \textit{fully homomorphic} if $\mathcal{F}$ is the set of all computable functions.
+To generalize this property, consider the contraint that
+$\delta(\mathcal{F}(\varepsilon(m_1), \varepsilon(m_2), ...,
+\varepsilon(m_n))) = \mathcal{F}(m_1, m_2, ..., m_n)$ for some set of
+functions $\mathcal{F}$ on all $m_i$ in the plaintext space. We say
+that an encryption scheme is \textit{partially homomorphic} if
+$\mathcal{F}$ is a (finite or infinite) proper subset of computable
+functions. We say that an encryption scheme is \textit{fully
+  homomorphic} if $\mathcal{F}$ is the set of all computable
+functions.
 
 \subsection{Constructing a Boolean Circuit}
-Boolean circuits comprised of AND, OR and NOT gates are Turing Complete. Every computable function has a circuit version. In fact, any Turing Machine $T$ can be turned into a boolean circuit of size $k \times |T| \times log(|T|)$ for a small constant k. Thus to show that an encryption scheme $Y$ is \textit{partially homomorphic}, it is sufficient to show that an encryption scheme $Y$ can handle boolean circuits of a particular variety. To show that an encryption scheme is \textit{fully homomorphic}, it is sufficient to show that an encryption scheme can handle every possible boolean circuit. Furthermore, it can be shown that to get homomorphic AND, OR, and NOT gates, it sufficies to have homomorphic addition and homomorphic multiplication.
+Boolean circuits comprised of AND, OR and NOT gates are Turing
+Complete. Every computable function has a circuit version. In fact,
+any Turing Machine $T$ can be turned into a boolean circuit of size $k
+\times |T| \times log(|T|)$ for a small constant k. Thus to show that
+an encryption scheme $Y$ is \textit{partially homomorphic}, it is
+sufficient to show that an encryption scheme $Y$ can handle boolean
+circuits of a particular variety. To show that an encryption scheme is
+\textit{fully homomorphic}, it is sufficient to show that an
+encryption scheme can handle every possible boolean
+circuit. Furthermore, it can be shown that to get homomorphic AND, OR,
+and NOT gates, it sufficies to have homomorphic addition and
+homomorphic multiplication.
 \begin{eqnarray*}
 \mathrm{NOT}(x) &=& 1+x \bmod 2\\
 \mathrm{AND}(x,y) &=& xy \bmod 2\\
@@ -144,12 +166,14 @@ Boolean circuits comprised of AND, OR and NOT gates are Turing Complete. Every c
 To begin, Gentry proposes a simple partially homomorphic encryption
 scheme over the integers:
 
-Key Generation: The key, $p$, is a randomly generated odd integer.
+Key Generation: The key, $p$, is a randomly generated $\lambda^2$ bit
+odd integer.
 
 Encryption: To encrypt a single bit $ m \in \{0,1\} $, pick a
 ciphertext integer whose residue mod $ p $ has the same parity as
-$m$. This ciphertext integer can be described as $ c = pq + m $, where
-$ p $ is the private key, and $q$ is a $\lambda$ bit integer.
+$m$. This ciphertext integer can be described as $ c = pq + m' $,
+where $ p $ is the private key, $m'$ is a random $\lambda$ bit integer
+with least significant bit $m$, and $q$ is a $\lambda^5$ bit integer.
 
 Decryption: Decryption under this scheme is simple, the given a
 ciphertext $c$, $ m = ( c \bmod p) \bmod 2 $.
@@ -177,20 +201,22 @@ series of encryptions of $0$. The 3rd party can then add one to any
 encryption of $0$ to have it decrypt to $1$, and leave it alone to
 have it decrypt to $0$.
 
-\subsection{Noise}
+\subsubsection{Noise}
 As sequential operations are preformed on cyphertext, a number of
 excess ``noise'' is introduced. For example, by preforming a single
 addition and multiplication, a large term appears:
 
 \begin{eqnarray*}
-\varepsilon(x) + \varepsilon(y) \times \varepsilon &=& (m_1 + m_2 + pq_1 + pq_2)(m_3 + pq_3)\\
+\varepsilon(x) + \varepsilon(y) \times \varepsilon(z) &=& (m_1 + m_2 + pq_1 + pq_2)(m_3 + pq_3)\\
 &=&m_1m_3 + m_2m_3 + p^2q_1q_3 + p^2q_2q_3\\
 &=&m_3(m_1 + m_2) + p^2(q_1q_3 + q_2q_3)
 \end{eqnarray*}
 
+\subsection{Bootstrapping}
+
 \subsection{Fully Homomorphic Encrpytion}
 
-\subsection{Construction}
+\subsection{Security}
 Gentry proposes a fully homomorphic encryption scheme that relies on
 two different ``difficult problems'' for security, the
 \textbf{Approximate Greatest Common Divisor} problem, and the
@@ -211,8 +237,6 @@ problem. In the classic Subset Sum problem, we are given a set $
 answer set must be much smaller than the cardinality of $ \mathbb{s}
 $. This problem, and its parent problem (Subset Sum), have been shown
 to be intractable reasonably sized $ \mathbb{s} $.
-
-\subsection{Bootstrapping}
 
 \section{Fully Homomorphic Encryption in the Future}
 
