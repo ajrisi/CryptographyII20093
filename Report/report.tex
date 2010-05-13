@@ -81,10 +81,10 @@ While a Fully Homomorphic Encryption scheme is new, the idea is
 not. The inspiration for a fully homomorphic encryption system came
 from an interesting property in RSA.
 
-\begin{eqnarray}
+\begin{eqnarray*}
 c = m ^{e} \bmod n\\
 m = c ^{d} \bmod n 
-\end{eqnarray}
+\end{eqnarray*}
 
 If we multiply the ciphertext $c$ by $y ^{e}$, we can see that the
 decryption of $ cy^{e} $ will yield $my$, or the plaintext multiplied
@@ -111,17 +111,25 @@ exhibited partial homomorphism over some operations.
 
 \subsection{Multiplicative Homomorphism in RSA}
 In RSA, the encryption function $\varepsilon$ and decryption function $\delta$ provide a multiplicative homomorphism. First, recall:
-\begin{eqnarray}
-\varepsilon_{RSA}(m) &=& m^e \bmod n\\
-\delta_{RSA}(c) &=& c^d \bmod n\\
+\begin{eqnarray*}
+n &=& pq\\
+\phi(n) &=& (p-1)(q-1)\\
 de &=& 1 \bmod \phi(n)\\
 m^{de} \bmod n &=& m \bmod n\\
-\\
-\varepsilon_{RSA}(x) \varepsilon_{RSA}(y) = 
-\end{eqnarray}
-
+\varepsilon_{RSA}(m) &=& m^e \bmod n\\
+\delta_{RSA}(c) &=& c^d \bmod n\\
+\end{eqnarray*}
+Decrypting a multiplication of two ciphertexts yeilds the multiplication of the corresponding plaintexts.
+\begin{eqnarray*}
+\varepsilon_{RSA}(x) \times \varepsilon_{RSA}(y) &=& x^e y^e \bmod n\\
+\delta(\varepsilon_{RSA}(x) \times \varepsilon_{RSA}(y)) &=& (x^e y^e)^d \bmod n\\
+&=& x^{de} y^{de} \bmod n\\
+&=& x y \bmod n
+\end{eqnarray*}
 
 \subsection{Partially Homomorphic and Fully Homomorphic Encryption}
+To generalize this property, consider the contraint that $\delta(\mathcal{F}(\varepsilon(m_1), \varepsilon(m_2), ..., \varepsilon(m_n))) = \mathcal{F}(m_1, m_2, ..., m_n)$ for some set of functions $\mathcal{F}$ on all $m_i$ in the plaintext space. We say that an encryption scheme is \textit{partially homomorphic} if $\mathcal{F}$ is a (finite or infinite) proper subset of computable functions. We say that an encryption scheme is \textit{fully homomorphic} if $\mathcal{F}$ is the set of all computable functions.
+
 
 \subsection{Constructing a Boolean Circuit}
 
