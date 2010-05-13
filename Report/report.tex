@@ -195,7 +195,7 @@ and $ \varepsilon(y) $.
 \paragraph{Multiplication}
 \begin{eqnarray*}
 \varepsilon(x) \times \varepsilon(y) &=& (m_1 + p q_1)(m_2 + p q_2)\\
-\delta(\varepsilon(x) \times \varepsilon(y))&=& m_1m_2 + m_1pq_2 + m_2pq_1 + p^2q_1q_2 \bmod p\\
+\delta(\varepsilon(x) \times \varepsilon(y))&=& m_1m_2 + m_1pq_2 + m_2pq_1 + p^2q_1q_2 \bmod p \bmod 2\\
 &=& m_1m_2 \bmod 2
 \end{eqnarray*}
 
@@ -216,15 +216,17 @@ excess ``noise'' is introduced. For example, by preforming a single
 addition and multiplication, a large term appears:
 
 \begin{eqnarray*}
-\varepsilon(x) + \varepsilon(y) \times \varepsilon(z) &=& (m_1 + m_2 + pq_1 + pq_2)(m_3 + pq_3)\\
+(\varepsilon(x) + \varepsilon(y)) \times \varepsilon(z) &=&(m_1 + m_2 + pq_1 + pq_2)(m_3 + pq_3)\\
 &=&m_1m_3 + m_2m_3 + p^2q_1q_3 + p^2q_2q_3\\
 &=&m_3(m_1 + m_2) + p^2(\mathbf{q_1q_3 + q_2q_3})\\
-&=&m_3(m_1 + m_2) + p^2(\mathbf{\gamma})
+&=&\mathbf{\alpha} + p(\mathbf{\gamma})
 \end{eqnarray*}
 
-As the term $\gamma$ grows (approaching p), a problem arises. The
-growing term $\gamma$ limits the number of operatios perfomed on the
-ciphertext. This causes a boundary, making some functions
+As the term $\alpha$ grows (approaching p), a problem arises. If
+$\alpha$ becomes larger than $p$, the parity of the masked plaintext
+is corrupted, resulting in invalid decryption. This property limits
+the number of operations the can be perfomed, thus limiting the number
+of computable functions.
 
 \subsection{Bootstrapping}
 
@@ -254,6 +256,18 @@ $. This problem, and its parent problem (Subset Sum), have been shown
 to be intractable reasonably sized $ \mathbb{s} $.
 
 \section{Fully Homomorphic Encryption in the Future}
+There are a number of challenges that must be overcome before Gentry's
+technique can be used ``in the real world.'' Primarily, its
+inefficiency. Currently, in order to achieve a $\lambda = 80$ bit
+security, a 2 terabyte ciphertext for evey \textit{bit} of plaintext
+must be used. While Gentry's lattice scheme\cite{gentry-lattice}
+offers much smaller ciphertext-per-bit (64 kilobytes, in this
+example), it still is not usable for reasonably sized plaintexts.
+
+Once the ciphertext size has been reduced, the future for fully
+homomorphic encryption is broad. One can imagine it being used for
+secure cloud computing, anti-priacy applications, voting, census data,
+and more.
 
 \pagebreak
 \bibliography{report}
