@@ -227,6 +227,29 @@ growing term $\gamma$ limits the number of operatios perfomed on the
 ciphertext. This causes a boundary, making some functions
 
 \subsection{Bootstrapping}
+How might one remove this growing noise vector? The simplest method is
+to send encrypted outputs to the private key holder -- allowing him to
+decrypt and then reencrypt (and thus in the process removing the noise).
+This would be unfortunate, however, because the scheme would then
+require the continual involvement of the private key holder.
+
+Gentry's idea was to all allow third party decryption of ciphertexts.
+However, third party decryption would be limited to homomorphic
+decryption. Namely, if the noise vector can support a homomorphic
+decryption of ciphertexts, the scheme becomes \textit{bootstrappable} --
+it allows the third party to refresh error vectors as it computes
+the target fuction through the boolean circuit.
+
+The question then becomes, can this scheme support a homomorphic
+evaluation of its decryption circuit? Unfortunately, the answer is
+no:
+\begin{eqnarray*}
+\delta(c) &=& (c \bmod p) \bmod 2\\
+&=& c - p \lceil c/p \rfloor \bmod 2\\
+&=& c - \lceil c/p \rfloor \bmod 2\\
+&=& LSB(c) \oplus LSB(\lceil c/p \rfloor)
+\end{eqnarray*}
+
 
 \subsection{Fully Homomorphic Encrpytion}
 
@@ -242,13 +265,12 @@ The approximate GCD problem is, given a set of $ n _{i} + pq_{i} $,
 determine p. The best known algorithm is exponential time in the size
 of inputs.
 
-
 \subsubsection{Sparse Subset Sum}
 The sparse subset sum problem is a variant of the common subset sum
 problem. In the classic Subset Sum problem, we are given a set $
 \mathbb{s} $ and a target value $t$, and are asked for a subset of $
 \mathbb{s} $ whose \textit{sum} is equal to $t$. In the \textit{Sparse
-  Subset Sum} problem, the simple addition that the cardinality of the
+ Subset Sum} problem, the simple addition that the cardinality of the
 answer set must be much smaller than the cardinality of $ \mathbb{s}
 $. This problem, and its parent problem (Subset Sum), have been shown
 to be intractable reasonably sized $ \mathbb{s} $.
@@ -258,5 +280,3 @@ to be intractable reasonably sized $ \mathbb{s} $.
 \pagebreak
 \bibliography{report}
 \end{document}
-
-
