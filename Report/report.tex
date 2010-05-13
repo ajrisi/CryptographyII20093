@@ -137,6 +137,28 @@ To generalize this property, consider the contraint that $\delta(\mathcal{F}(\va
 \section{Gentry's Homomorphic Encryption Scheme}
 
 \subsection{Partially Homomorphic Encryption}
+To begin, Gentry proposes a simple partially homomorphic encryption
+scheme over the integers:
+
+Key Generation: The key, $p$, is a randomly generated odd integer.
+
+Encryption: To encrypt a single bit $ m \in \{0,1\} $, pick a
+ciphertext integer whose residue mod $ p $ has the same parity as
+$m$. This ciphertext integer can be described as $ c = pq + m $, where
+$ p $ is the private key, and $q$ is a $\lambda$ bit integer.
+
+Decryption: Decryption under this scheme is simple, the given a
+ciphertext $c$, $ m = ( c \bmod p) \bmod 2 $.
+
+We can show that this is homomorphic by looking showing the
+multiplication and addition of two cithpertexts, $ \varepsilon(x) $
+and $ \varepsilon(y) $.
+
+\paragraph{Multiplication}
+\begin{eqnarray*}
+\end{eqnarray*}
+
+\paragraph{Addition}
 
 \subsection{Fully Homomorphic Encrpytion}
 
