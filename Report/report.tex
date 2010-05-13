@@ -130,9 +130,13 @@ Decrypting a multiplication of two ciphertexts yeilds the multiplication of the 
 \subsection{Partially Homomorphic and Fully Homomorphic Encryption}
 To generalize this property, consider the contraint that $\delta(\mathcal{F}(\varepsilon(m_1), \varepsilon(m_2), ..., \varepsilon(m_n))) = \mathcal{F}(m_1, m_2, ..., m_n)$ for some set of functions $\mathcal{F}$ on all $m_i$ in the plaintext space. We say that an encryption scheme is \textit{partially homomorphic} if $\mathcal{F}$ is a (finite or infinite) proper subset of computable functions. We say that an encryption scheme is \textit{fully homomorphic} if $\mathcal{F}$ is the set of all computable functions.
 
-
 \subsection{Constructing a Boolean Circuit}
-
+Boolean circuits comprised of AND, OR and NOT gates are Turing Complete. Every computable function has a circuit version. In fact, any Turing Machine $T$ can be turned into a boolean circuit of size $k \times |T| \times log(|T|)$ for a small constant k. Thus to show that an encryption scheme $Y$ is \textit{partially homomorphic}, it is sufficient to show that an encryption scheme $Y$ can handle boolean circuits of a particular variety. To show that an encryption scheme is \textit{fully homomorphic}, it is sufficient to show that an encryption scheme can handle every possible boolean circuit. Furthermore, it can be shown that to get homomorphic AND, OR, and NOT gates, it sufficies to have homomorphic addition and homomorphic multiplication.
+\begin{eqnarray*}
+\mathrm{NOT}(x) &=& 1+x \bmod 2\\
+\mathrm{AND}(x,y) &=& xy \bmod 2\\
+\mathrm{OR}(x,y) &=& (1+x)(1+y) + 1 \bmod 2
+\end{eqnarray*}
 
 \section{Gentry's Homomorphic Encryption Scheme}
 
