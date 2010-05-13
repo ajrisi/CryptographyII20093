@@ -31,7 +31,7 @@ homomorphism” – a cryptographic scheme that would allow third party
 processing of encrypted data without access to any plaintext or
 private key information. While partial strides toward such a system
 have been made over the past thirty years, most cryptographers
-believed that no such scheme could actually exist. Craig Gentry of
+believed that no such scheme would ever be realized. Craig Gentry of
 Stanford University fully realized such a scheme in his 2009 PhD
 dissertation “A Fully Homomorphic Encryption Scheme Over Ideal
 Lattices.”\cite{gentry-lattice} In this paper, we describe a similar
@@ -53,7 +53,7 @@ for quite some time.
 Unfortunately, Gentry's partially homomorphic scheme suffered from the
 fact that as computations are performed on the ciphertexts, noise is
 introduced in the output ciphertexts. This limited the malleability of
-the scheme – after some number of computations, the error vectors
+the scheme -- after some number of computations, the error vectors
 would grow too large and decryption would become invalid.
 
 Gentry realized that if he could find some way to eliminate the
@@ -63,8 +63,8 @@ multiplications. In turn, this would allow him to perform any
 computable function on encrypted data.
 
 Aware that successfully decrypting and subsequently re-encrypting a
-given ciphertext would eliminate its noise vector, Gentry asked 'why
-not allow the third party to decrypt the ciphertexts homomorphically?'
+given ciphertext would eliminate its noise vector, Gentry asked ''why
+not allow the third party to decrypt the ciphertexts \textit{homomorphically}?''
 The third party would be able to remove the growing noise from
 ciphertexts. At the same time, asking the third party to do the
 decryption homomorphically would maintain the privacy of the private
@@ -160,33 +160,9 @@ and $ \varepsilon(y) $.
 
 \paragraph{Multiplication}
 \begin{eqnarray*}
-\varepsilon(x) \times \varepsilon(y) &=& (m_1 + p q_1)(m_2 + p q_2)\\
-\delta(\varepsilon(x) \times \varepsilon(y))&=& m_1m_2 + m_1pq_2 + m_2pq_1 + p^2q_1q_2 \bmod p\\
-&=& m_1m_2 \bmod 2
 \end{eqnarray*}
 
 \paragraph{Addition}
-\begin{eqnarray*}
-\varepsilon(x) + \varepsilon(y) &=& m_1 + p q_1 + m_2 + p q_2\\
-\delta(\varepsilon(x) + \varepsilon(y))&=& m_1 + m_2 + pq_1 + pq_2 \bmod p\\
-&=& m_1 + m_2 \bmod 2
-\end{eqnarray*}
-
-To make this a public key system, we simply issue the 3rd party a
-series of encryptions of $0$. The 3rd party can then add one to any
-encryption of $0$ to have it decrypt to $1$, and leave it alone to
-have it decrypt to $0$.
-
-\subsection{Noise}
-As sequential operations are preformed on cyphertext, a number of
-excess ``noise'' is introduced. For example, by preforming a single
-addition and multiplication, a large term appears:
-
-\begin{eqnarray*}
-\varepsilon(x) + \varepsilon(y) \times \varepsilon &=& (m_1 + m_2 + pq_1 + pq_2)(m_3 + pq_3)\\
-&=&m_1m_3 + m_2m_3 + p^2q_1q_3 + p^2q_2q_3\\
-&=&m_3(m_1 + m_2) + p^2(q_1q_3 + q_2q_3)
-\end{eqnarray*}
 
 \subsection{Fully Homomorphic Encrpytion}
 
